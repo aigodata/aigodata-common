@@ -44,6 +44,10 @@ public class StringUtil {
 		return Long.parseLong(obj.toString());
 	}
 
+	public static int ifMaxNull(Object obj, int maxValue) {
+		return Math.min(ifIntNull(obj), maxValue);
+	}
+
 	public static int ifIntNull(Object obj) {
 		if (obj == null || "".equals(obj.toString())) {
 			return 0;
@@ -68,27 +72,30 @@ public class StringUtil {
 	public static boolean isNotNull(Object obj) {
 		return !isNull(obj);
 	}
-	
-	public static String getJsonProps(JSONObject json,String key) {
+
+	public static String getJsonProps(JSONObject json, String key) {
 		return json.getString(key);
 	}
-	public static int getJsonProps4Int(JSONObject json,String key) {
+
+	public static int getJsonProps4Int(JSONObject json, String key) {
 		return StringUtil.ifIntNull(json.get(key));
 	}
-	public static long getJsonProps4Long(JSONObject json,String key) {
+
+	public static long getJsonProps4Long(JSONObject json, String key) {
 		return StringUtil.ifLongNull(json.get(key));
 	}
-	public static Date getJsonProps4Date(JSONObject json,String key) {
-		if(StringUtil.isNotNull(json.get(key))) {
+
+	public static Date getJsonProps4Date(JSONObject json, String key) {
+		if (StringUtil.isNotNull(json.get(key))) {
 			try {
 				return StringUtil.dateTime.parse(json.get(key).toString());
 			} catch (Exception e) {
-				
+
 			}
 		}
 		return null;
 	}
-	
+
 	public static long[] str2long(String str) {
 		long[] array = null;
 		if (isNotNull(str)) {
