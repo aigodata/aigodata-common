@@ -2,6 +2,7 @@ package com.aigodata.common.common.shiro.realm;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -18,15 +19,20 @@ import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 import com.aigodata.common.common.constant.UserStatus;
+import com.aigodata.common.domain.GroupRole;
 import com.aigodata.common.domain.Permission;
 import com.aigodata.common.domain.Role;
 import com.aigodata.common.domain.User;
+import com.aigodata.common.mapper.GroupUserMapper;
 import com.aigodata.common.mapper.PermissionMapper;
 import com.aigodata.common.mapper.RoleMapper;
 import com.aigodata.common.mapper.UserMapper;
+import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * 用户认证和授权
@@ -42,6 +48,8 @@ public class UserAuthRealm extends AuthorizingRealm {
 	private RoleMapper roleMapper;
 	@Autowired
 	private PermissionMapper permissionMapper;
+	@Autowired
+	private GroupUserMapper groupUserMapper;
 
 	/**
 	 * 权限验证
@@ -52,7 +60,7 @@ public class UserAuthRealm extends AuthorizingRealm {
 //		Integer id = Integer.parseInt(principal.toString());
 		Collection<Integer> integers = principals.byType(Integer.class);
 		Integer id = Iterables.getFirst(integers, null);
-		
+
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		// 从数据库获取用户角色权限信息
 		List<String> roleNames = roleMapper.selectNamesByUserId(id);
@@ -82,7 +90,8 @@ public class UserAuthRealm extends AuthorizingRealm {
 			return null;
 		}
 		User user = users.get(0);
-
+		// 添加用户组
+		List<Map> groupUsers = groupUserMapper.getUserGroup(user.getId());
 		// 添加角色信息
 		List<Role> roles = roleMapper.selectByUserId(user.getId());
 		// 只考虑第一个角色
@@ -100,7 +109,7 @@ public class UserAuthRealm extends AuthorizingRealm {
 		principalCollection.add("roleId:" + roleId, getName());
 		// 属性增加 前缀, 避免与其他属性合并(Shiro的问题, 如果属性值一样会合并)
 		principalCollection.add("role:" + roleName, getName());
-
+		principalCollection.add(groupUsers, getName());
 		// 盐值
 		ByteSource credentialsSalt = ByteSource.Util.bytes(user.getSalt());
 

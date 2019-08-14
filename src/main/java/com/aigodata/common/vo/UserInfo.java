@@ -1,5 +1,7 @@
 package com.aigodata.common.vo;
 
+import net.sf.json.JSONArray;
+
 public class UserInfo {
 
 	private Integer id;
@@ -12,6 +14,8 @@ public class UserInfo {
 
 	private String role;
 
+	private JSONArray groups;
+
 	public UserInfo() {
 	}
 
@@ -20,12 +24,13 @@ public class UserInfo {
 		this.name = name;
 	}
 
-	public UserInfo(Integer id, String name, String username, Integer roleId, String role) {
+	public UserInfo(Integer id, String name, String username, Integer roleId, String role, JSONArray groups) {
 		this.id = id;
 		this.name = name;
 		this.username = username;
 		this.roleId = roleId;
 		this.role = role;
+		this.groups = groups;
 	}
 
 	public Integer getId() {
@@ -67,4 +72,13 @@ public class UserInfo {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+	public JSONArray getGroups() {
+		return groups;
+	}
+
+	public void setGroups(JSONArray groups) {
+		this.groups = groups;
+	}
+
 }

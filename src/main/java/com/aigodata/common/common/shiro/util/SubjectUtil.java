@@ -1,13 +1,19 @@
 package com.aigodata.common.common.shiro.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 
-import com.google.common.collect.Iterables;
+import com.aigodata.common.common.util.StringUtil;
 import com.aigodata.common.vo.UserInfo;
+import com.google.common.collect.Iterables;
+
+import net.sf.json.JSONArray;
 
 public class SubjectUtil {
 
@@ -64,7 +70,17 @@ public class SubjectUtil {
 		Integer roleId = Integer.parseInt(roleIdString.split(":")[1]);
 		String role = Iterables.get(strings, 3);
 		role = role.split(":")[1];
-		return new UserInfo(userId, name, username, roleId, role);
+
+		/*
+		 * List 类型，包含用户组，用户组对应的角色
+		 */
+		Collection<List> lists = principals.byType(List.class);
+		JSONArray groups = new JSONArray();
+		List<Map> groupUsers = Iterables.get(lists, 0);
+		if (groupUsers != null) {
+			groups = JSONArray.fromObject(groupUsers);
+		}
+		return new UserInfo(userId, name, username, roleId, role, groups);
 	}
 
 }
