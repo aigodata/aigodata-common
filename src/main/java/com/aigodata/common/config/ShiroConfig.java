@@ -84,7 +84,7 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/logout", "anon");
 		// 不拦截验证码请求
 		filterChainDefinitionMap.put("/captcha", "anon");
-
+		filterChainDefinitionMap.put("/actuator/prometheus", "anon");
 		// 认证所有请求userOperateFilter,
 		filterChainDefinitionMap.put("/**", "ajaxSessionTimeout, jsonAuth, authc");
 		bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
