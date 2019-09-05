@@ -8,26 +8,17 @@ public class RolePermission extends Base {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	private Integer id;
 	/*
 	 * 数据id
 	 */
+	@Id
 	private Integer roleId;
 
 	/*
 	 * 权限ID
 	 */
+	@Id
 	private Integer permissionId;
-
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public Integer getRoleId() {
 		return roleId;
