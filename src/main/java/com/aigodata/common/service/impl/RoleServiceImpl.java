@@ -28,13 +28,15 @@ public class RoleServiceImpl implements RoleService {
 	public Role add(Role role, Integer[] permissionIds) {
 		roleMapper.insertUseGeneratedKeys(role);
 		// 插入角色权限
-		List<RolePermission> rolePermissions = Arrays.stream(permissionIds).map(permissionId -> {
-			RolePermission p = new RolePermission();
-			p.setRoleId(role.getId());
-			p.setPermissionId(permissionId);
-			return p;
-		}).collect(Collectors.toList());
-		rolePermissionMapper.insertList(rolePermissions);
+		if (permissionIds != null && permissionIds.length > 0) {
+			List<RolePermission> rolePermissions = Arrays.stream(permissionIds).map(permissionId -> {
+				RolePermission p = new RolePermission();
+				p.setRoleId(role.getId());
+				p.setPermissionId(permissionId);
+				return p;
+			}).collect(Collectors.toList());
+			rolePermissionMapper.insertList(rolePermissions);
+		}
 		return role;
 	}
 
@@ -47,13 +49,15 @@ public class RoleServiceImpl implements RoleService {
 		// 删除角色之前的权限
 		rolePermissionMapper.delete(p);
 		// 添加新的权限
-		List<RolePermission> rolePermissions = Arrays.stream(permissionIds).map(permissionId -> {
-			RolePermission ps = new RolePermission();
-			ps.setRoleId(role.getId());
-			ps.setPermissionId(permissionId);
-			return ps;
-		}).collect(Collectors.toList());
-		rolePermissionMapper.insertList(rolePermissions);
+		if (permissionIds != null && permissionIds.length > 0) {
+			List<RolePermission> rolePermissions = Arrays.stream(permissionIds).map(permissionId -> {
+				RolePermission ps = new RolePermission();
+				ps.setRoleId(role.getId());
+				ps.setPermissionId(permissionId);
+				return ps;
+			}).collect(Collectors.toList());
+			rolePermissionMapper.insertList(rolePermissions);
+		}
 		return count;
 	}
 
