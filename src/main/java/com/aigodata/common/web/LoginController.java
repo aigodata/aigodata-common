@@ -16,10 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.aigodata.common.common.exception.GlobalException;
 import com.aigodata.common.common.shiro.util.SubjectUtil;
 import com.aigodata.common.common.util.CaptchaUtil;
@@ -29,6 +25,10 @@ import com.aigodata.common.common.web.annotation.JsonParam;
 import com.aigodata.common.model.ResultModel;
 import com.aigodata.common.model.ResultModel.ResultStatus;
 import com.aigodata.common.service.LoginService;
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 @RestController
 public class LoginController {

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.base.Strings;
 import com.aigodata.common.common.constant.UserStatus;
 import com.aigodata.common.common.exception.GlobalException;
 import com.aigodata.common.common.shiro.realm.UserAuthRealm;
@@ -21,6 +20,7 @@ import com.aigodata.common.mapper.UserMapper;
 import com.aigodata.common.mapper.UserRoleMapper;
 import com.aigodata.common.model.ResultModel.ResultStatus;
 import com.aigodata.common.service.UserService;
+import com.google.common.base.Strings;
 
 @Service
 public class UserServiceImpl implements UserService {
