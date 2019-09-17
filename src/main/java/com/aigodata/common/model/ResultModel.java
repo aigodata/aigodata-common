@@ -1,5 +1,7 @@
 package com.aigodata.common.model;
 
+import com.aigodata.common.common.util.StringUtil;
+
 /**
  * 返回结果封装
  * 
@@ -17,7 +19,8 @@ public class ResultModel {
 	// 结果数据
 	private Object data;
 
-	public ResultModel() {}
+	public ResultModel() {
+	}
 
 	public ResultModel(int code, String message) {
 		this(code, message, "");
@@ -26,7 +29,9 @@ public class ResultModel {
 	public ResultModel(int code, String message, Object data) {
 		this.code = code;
 		this.message = message;
-		this.data = data;
+		if (StringUtil.isNotNull(data)) {
+			this.data = data;
+		}
 	}
 
 	public int getCode() {
@@ -108,6 +113,10 @@ public class ResultModel {
 		return new ResultModel(ResultStatus.SERVER_ERROR.code(), ResultStatus.SERVER_ERROR.message());
 	}
 
+	public static ResultModel NoFoundEngine() {
+		return new ResultModel(ResultStatus.NO_FOUND_ENGINE.code(), ResultStatus.NO_FOUND_ENGINE.message());
+	}
+
 	/**
 	 * 返回通用失败结果
 	 * 
@@ -131,10 +140,8 @@ public class ResultModel {
 	/**
 	 * 返回失败结果, 自定义状态码和消息
 	 * 
-	 * @param status
-	 *            返回结果状态
-	 * @param message
-	 *            返回结果消息
+	 * @param status  返回结果状态
+	 * @param message 返回结果消息
 	 * @return
 	 */
 	public static ResultModel fail(String message) {
@@ -144,10 +151,8 @@ public class ResultModel {
 	/**
 	 * 返回失败结果, 自定义状态码和消息
 	 * 
-	 * @param status
-	 *            返回结果状态
-	 * @param message
-	 *            返回结果消息
+	 * @param status  返回结果状态
+	 * @param message 返回结果消息
 	 * @return
 	 */
 	public static ResultModel fail(int code, String message) {
@@ -157,12 +162,9 @@ public class ResultModel {
 	/**
 	 * 返回失败结果, 自定义状态码和消息
 	 * 
-	 * @param status
-	 *            返回结果状态
-	 * @param message
-	 *            返回结果消息
-	 * @param data
-	 *            返回结果数据
+	 * @param status  返回结果状态
+	 * @param message 返回结果消息
+	 * @param data    返回结果数据
 	 * @return
 	 */
 	public static ResultModel fail(int code, String message, Object data) {
@@ -209,15 +211,14 @@ public class ResultModel {
 		/*
 		 * 应用
 		 */
-		SUCCESS(200, "ok"), BAD_REQUEST(400, "Bad Request"), UNAUTHORIZED(401, "Unauthorized"), FORBIDDEN(403,
-				"Forbidden"), SERVER_ERROR(500, "Internal Server Error"),
+		SUCCESS(200, "ok"), BAD_REQUEST(400, "Bad Request"), UNAUTHORIZED(401, "Unauthorized"),
+		FORBIDDEN(403, "Forbidden"), SERVER_ERROR(500, "Internal Server Error"),
 
 		/*
 		 * 登录
 		 */
-		NOT_LOGGED(1004, "用户未登录"), USERNAME_PASSWORD_ERROR(1005, "用户名或密码错误"), CAPTCHA_ERROR(1006,
-				"验证码错误"), CAPTCHA_LOSE(1007,
-						"验证码失效"), ACCOUNT_LOCKED(1008, "账户已锁定"), PASSWORD_DECRYPT_ERROR(1009, "密码解密失败"),
+		NOT_LOGGED(1004, "用户未登录"), USERNAME_PASSWORD_ERROR(1005, "用户名或密码错误"), CAPTCHA_ERROR(1006, "验证码错误"),
+		CAPTCHA_LOSE(1007, "验证码失效"), ACCOUNT_LOCKED(1008, "账户已锁定"), PASSWORD_DECRYPT_ERROR(1009, "密码解密失败"),
 
 		/*
 		 * 用户
@@ -232,7 +233,9 @@ public class ResultModel {
 		/*
 		 * 密码
 		 */
-		OLD_PASSWORD_ERROR(9301, "原密码错误"), NEW_PASSWORD_NOT_CHANGE(9302, "新密码不能与原密码相同");
+		OLD_PASSWORD_ERROR(9301, "原密码错误"), NEW_PASSWORD_NOT_CHANGE(9302, "新密码不能与原密码相同"),
+
+		NO_FOUND_ENGINE(9999, "引擎或引擎类型不存在");
 
 		// 状态码
 		private final int code;
