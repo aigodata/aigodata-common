@@ -1,6 +1,5 @@
 package com.aigodata.common.common.shiro.util;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 
-import com.aigodata.common.common.util.StringUtil;
 import com.aigodata.common.vo.UserInfo;
 import com.google.common.collect.Iterables;
 
@@ -33,6 +31,18 @@ public class SubjectUtil {
 		Collection<Integer> integers = principals.byType(Integer.class);
 		Integer userId = Iterables.getFirst(integers, null);
 		return userId == null ? 0 : userId;
+	}
+
+	public static Integer getRoleId() {
+		Subject currentUser = SecurityUtils.getSubject();
+		PrincipalCollection principals = currentUser.getPrincipals();
+		if (principals == null) {
+			return 0;
+		}
+		Collection<String> strings = principals.byType(String.class);
+		String roleIdString = Iterables.get(strings, 2);
+		Integer roleId = Integer.parseInt(roleIdString.split(":")[1]);
+		return roleId == null ? 0 : roleId;
 	}
 
 	/**
