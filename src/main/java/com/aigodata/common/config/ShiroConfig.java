@@ -24,6 +24,7 @@ import org.springframework.context.annotation.DependsOn;
 import com.aigodata.common.common.shiro.filter.AjaxSessionTimeoutFilter;
 import com.aigodata.common.common.shiro.filter.JsonAuthenticationFilter;
 import com.aigodata.common.common.shiro.realm.UserAuthRealm;
+import com.aigodata.common.common.util.StringUtil;
 
 /**
  * Shiro配置
@@ -55,6 +56,8 @@ public class ShiroConfig {
 	private String redisPassword;
 	@Value("${spring.redis.port}")
 	private int redisPort;
+	@Value("${spring.shiro.filter.anon:#{null}}")
+	private String shiroFilterAnon;
 
 	private static final String CACHE_KEY = "shiro:cache:";
 	private static final String SESSION_KEY = "shiro:token:";
@@ -84,7 +87,12 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/logout", "anon");
 		// 不拦截验证码请求
 		filterChainDefinitionMap.put("/captcha", "anon");
-		filterChainDefinitionMap.put("/actuator/prometheus", "anon");
+		if (StringUtil.isNotNull(shiroFilterAnon)) {
+			String[] filter = shiroFilterAnon.split(",");
+			for (int i = 0; i < filter.length; i++) {
+				filterChainDefinitionMap.put(filter[i], "anon");
+			}
+		}
 		// 认证所有请求userOperateFilter,
 		filterChainDefinitionMap.put("/**", "ajaxSessionTimeout, jsonAuth, authc");
 		bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -101,11 +109,12 @@ public class ShiroConfig {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		securityManager.setRealm(userAuthRealm());
 		// shiro-cache
-		//securityManager.setSessionManager(sessionManager());
-		//securityManager.setCacheManager(cacheManager());
+		// securityManager.setSessionManager(sessionManager());
+		// securityManager.setCacheManager(cacheManager());
 		// shiro-redis集群-cache
-		//securityManager.setSessionManager(sessionManager(redisSessionDAO(redisManager()), simpleCookie()));
-		//securityManager.setCacheManager(redisCacheManager(redisManager()));
+		// securityManager.setSessionManager(sessionManager(redisSessionDAO(redisManager()),
+		// simpleCookie()));
+		// securityManager.setCacheManager(redisCacheManager(redisManager()));
 		// shiro-redis-单机-cache
 		securityManager.setSessionManager(sessionManager(redisSessionDAO(redisSingleManager()), simpleCookie()));
 		securityManager.setCacheManager(redisCacheManager(redisSingleManager()));
@@ -115,31 +124,22 @@ public class ShiroConfig {
 	/***
 	 * shiro-redis Cluster 开始
 	 * 
-	@Bean
-	public RedisClusterManager redisManager() {
-		RedisClusterManager redisManager = new RedisClusterManager();
-		redisManager.setHost(redisCluster);
-		return redisManager;
-	}
-	@Bean
-	public RedisCacheManager redisCacheManager(RedisClusterManager redisManager) {
-		RedisCacheManager redisCacheManager = new RedisCacheManager();
-		redisCacheManager.setRedisManager(redisManager);
-		redisCacheManager.setExpire(86400);// 单位秒
-		redisCacheManager.setKeyPrefix(CACHE_KEY);
-		return redisCacheManager;
-	}
-	@Bean
-	public RedisSessionDAO redisSessionDAO(RedisClusterManager redisManager) {
-		RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-		redisSessionDAO.setExpire(86400);// 单位秒
-		redisSessionDAO.setKeyPrefix(SESSION_KEY);
-		redisSessionDAO.setRedisManager(redisManager);
-		return redisSessionDAO;
-	}
-	****/
-	
-	
+	 * @Bean public RedisClusterManager redisManager() { RedisClusterManager
+	 *       redisManager = new RedisClusterManager();
+	 *       redisManager.setHost(redisCluster); return redisManager; }
+	 * @Bean public RedisCacheManager redisCacheManager(RedisClusterManager
+	 *       redisManager) { RedisCacheManager redisCacheManager = new
+	 *       RedisCacheManager(); redisCacheManager.setRedisManager(redisManager);
+	 *       redisCacheManager.setExpire(86400);// 单位秒
+	 *       redisCacheManager.setKeyPrefix(CACHE_KEY); return redisCacheManager; }
+	 * @Bean public RedisSessionDAO redisSessionDAO(RedisClusterManager
+	 *       redisManager) { RedisSessionDAO redisSessionDAO = new
+	 *       RedisSessionDAO(); redisSessionDAO.setExpire(86400);// 单位秒
+	 *       redisSessionDAO.setKeyPrefix(SESSION_KEY);
+	 *       redisSessionDAO.setRedisManager(redisManager); return redisSessionDAO;
+	 *       }
+	 ****/
+
 	@Bean
 	public RedisManager redisSingleManager() {
 		RedisManager redisManager = new RedisManager();
@@ -157,7 +157,6 @@ public class ShiroConfig {
 		redisCacheManager.setKeyPrefix(CACHE_KEY);
 		return redisCacheManager;
 	}
-	
 
 	@Bean
 	public RedisSessionDAO redisSessionDAO(RedisManager redisManager) {
@@ -167,7 +166,6 @@ public class ShiroConfig {
 		redisSessionDAO.setRedisManager(redisManager);
 		return redisSessionDAO;
 	}
-	
 
 	@Bean
 	public DefaultWebSessionManager sessionManager(RedisSessionDAO sessionDAO, SimpleCookie simpleCookie) {
@@ -195,27 +193,23 @@ public class ShiroConfig {
 	/***
 	 * shiro-cache 开始
 	 *
-	 
-	@Bean
-	public DefaultWebSessionManager sessionManager() {
-		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-		sessionManager.setCacheManager(cacheManager());
-		sessionManager.setGlobalSessionTimeout(globalSessionTimeout);
-		sessionManager.setSessionValidationSchedulerEnabled(sessionValidationSchedulerEnabled);
-		return sessionManager;
-	}
-
-	@Bean
-	public EhCacheManager cacheManager() {
-		EhCacheManager cacheManager = new EhCacheManager();
-		cacheManager.setCacheManagerConfigFile(cacheManagerConfigFile);
-		return cacheManager;
-	}
-	
-	*
-	* shiro-cache 结束
-	*/
-
+	 * 
+	 * @Bean public DefaultWebSessionManager sessionManager() {
+	 *       DefaultWebSessionManager sessionManager = new
+	 *       DefaultWebSessionManager();
+	 *       sessionManager.setCacheManager(cacheManager());
+	 *       sessionManager.setGlobalSessionTimeout(globalSessionTimeout);
+	 *       sessionManager.setSessionValidationSchedulerEnabled(sessionValidationSchedulerEnabled);
+	 *       return sessionManager; }
+	 * 
+	 * @Bean public EhCacheManager cacheManager() { EhCacheManager cacheManager =
+	 *       new EhCacheManager();
+	 *       cacheManager.setCacheManagerConfigFile(cacheManagerConfigFile); return
+	 *       cacheManager; }
+	 *
+	 * 
+	 *       shiro-cache 结束
+	 */
 
 	/**
 	 * Realm
