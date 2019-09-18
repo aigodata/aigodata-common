@@ -2,6 +2,7 @@ package com.aigodata.common.domain;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -70,6 +71,9 @@ public class User extends Base implements AuthCachePrincipal {
 	 * 创建时间
 	 */
 	private LocalDateTime createTime;
+
+	@Column(name = "is_super")
+	private Integer isSuper;
 
 	/*
 	 * 角色ID, 用于添加用户接口前台传递参数
@@ -166,9 +170,16 @@ public class User extends Base implements AuthCachePrincipal {
 		this.roleId = roleId;
 	}
 
+	public Integer getIsSuper() {
+		return isSuper;
+	}
+
+	public void setIsSuper(Integer isSuper) {
+		this.isSuper = isSuper;
+	}
+
 	@Override
 	public String getAuthCacheKey() {
 		return String.valueOf(this.id);
 	}
-
 }

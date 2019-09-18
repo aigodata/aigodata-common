@@ -12,6 +12,8 @@ public class UserInfo {
 
 	private Integer roleId;
 
+	private Integer isSuper;
+
 	private String role;
 
 	private JSONArray groups;
@@ -24,13 +26,15 @@ public class UserInfo {
 		this.name = name;
 	}
 
-	public UserInfo(Integer id, String name, String username, Integer roleId, String role, JSONArray groups) {
+	public UserInfo(Integer id, String name, String username, Integer roleId, String role, JSONArray groups,
+			Integer isSuper) {
 		this.id = id;
 		this.name = name;
 		this.username = username;
 		this.roleId = roleId;
 		this.role = role;
 		this.groups = groups;
+		this.isSuper = isSuper;
 	}
 
 	public Integer getId() {
@@ -79,6 +83,14 @@ public class UserInfo {
 
 	public void setGroups(JSONArray groups) {
 		this.groups = groups;
+	}
+
+	public Integer getIsSuper() {
+		return isSuper;
+	}
+
+	public void setIsSuper(Integer isSuper) {
+		this.isSuper = isSuper;
 	}
 
 }

@@ -90,7 +90,13 @@ public class SubjectUtil {
 		if (groupUsers != null) {
 			groups = JSONArray.fromObject(groupUsers);
 		}
-		return new UserInfo(userId, name, username, roleId, role, groups);
+		/*
+		 * isSuper
+		 */
+		String isSuperStr = Iterables.get(strings, 4);
+		Integer isSuper = Integer.parseInt(isSuperStr.split(":")[1]);
+
+		return new UserInfo(userId, name, username, roleId, role, groups, isSuper);
 	}
 
 }

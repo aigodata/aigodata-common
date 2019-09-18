@@ -100,6 +100,7 @@ public class UserAuthRealm extends AuthorizingRealm {
 		if (user.getStatus() == UserStatus.LOCKED.value()) {
 			throw new LockedAccountException("用户 [" + username + "] 已锁定");
 		}
+		Integer isSuper = user.getIsSuper() == null ? 0 : user.getIsSuper();
 		// 用户身份信息
 		SimplePrincipalCollection principalCollection = new SimplePrincipalCollection();
 		principalCollection.add(user, this.getName());
@@ -110,6 +111,7 @@ public class UserAuthRealm extends AuthorizingRealm {
 		// 属性增加 前缀, 避免与其他属性合并(Shiro的问题, 如果属性值一样会合并)
 		principalCollection.add("role:" + roleName, getName());
 		principalCollection.add(groupUsers, getName());
+		principalCollection.add("isSuper:" + isSuper, getName());
 		// 盐值
 		ByteSource credentialsSalt = ByteSource.Util.bytes(user.getSalt());
 
