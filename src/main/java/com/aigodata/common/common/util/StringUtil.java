@@ -23,6 +23,11 @@ public class StringUtil {
 		System.out.println(12323);
 	}
 
+	public static String datefmt(String format) {
+		SimpleDateFormat ymfmt = new SimpleDateFormat(format);
+		return ymfmt.format(new Date());
+	}
+
 	public static String ifNull(Object obj) {
 		if (obj == null || "".equals(obj.toString())) {
 			return "";
