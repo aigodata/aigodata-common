@@ -33,7 +33,6 @@ public class ReadWriteUtil {
 		String inputLine = null;
 		while ((inputLine = reader.readLine()) != null) {
 			contentBuffer.append(inputLine);
-			contentBuffer.append("\n");
 		}
 		reader.close();
 		in.close();
@@ -84,6 +83,32 @@ public class ReadWriteUtil {
 		FileOutputStream fos = new FileOutputStream(new File(filePath));
 		byte[] bytes = fileContent.getBytes("UTF-8");
 		fos.write(bytes, 0, bytes.length);
+		fos.close();
+	}
+
+	/**
+	 * 写文件
+	 * 
+	 * @param fileName
+	 * @return
+	 * @throws Exception
+	 */
+	public static final void write(String filePath, InputStream in) throws Exception {
+		File file = new File(filePath);
+		File parentFile = file.getParentFile();
+		if (file.exists()) {
+			throw new Exception(LocaleMessage.get("ERROR_FILE_EXIST"));
+		}
+		if (!parentFile.exists()) {
+			parentFile.mkdirs();
+		}
+		FileOutputStream fos = new FileOutputStream(new File(filePath));
+		int len = -1;
+		byte[] bytes = new byte[4096];
+		while ((len = in.read(bytes)) != -1) {
+			fos.write(bytes, 0, bytes.length);
+		}
+		in.close();
 		fos.close();
 	}
 }
