@@ -75,7 +75,7 @@ public class ReadWriteUtil {
 		File file = new File(filePath);
 		File parentFile = file.getParentFile();
 		if (file.exists()) {
-			throw new Exception(LocaleMessage.get("ERROR_FILE_EXIST"));
+			throw new Exception("文件名重复");
 		}
 		if (!parentFile.exists()) {
 			parentFile.mkdirs();
@@ -97,7 +97,7 @@ public class ReadWriteUtil {
 		File file = new File(filePath);
 		File parentFile = file.getParentFile();
 		if (file.exists()) {
-			throw new Exception(LocaleMessage.get("ERROR_FILE_EXIST"));
+			throw new Exception("文件名重复");
 		}
 		if (!parentFile.exists()) {
 			parentFile.mkdirs();
