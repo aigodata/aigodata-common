@@ -1,6 +1,7 @@
 package com.aigodata.common.model;
 
 import com.aigodata.common.common.util.StringUtil;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * 返回结果封装
@@ -17,6 +18,7 @@ public class ResultModel {
 	private String message;
 
 	// 结果数据
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Object data;
 
 	public ResultModel() {

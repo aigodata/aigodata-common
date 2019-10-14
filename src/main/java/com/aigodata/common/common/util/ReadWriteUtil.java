@@ -9,8 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-import com.aigodata.common.common.language.LocaleMessage;
-
 /**
  * date: 2018年6月18日 下午4:14:25<br/>
  * 
