@@ -4,6 +4,7 @@
   */
 package com.aigodata.common.common.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -35,6 +36,17 @@ public class ReadWriteUtil {
 		reader.close();
 		in.close();
 		return contentBuffer.toString();
+	}
+
+	public static final byte[] readByte(InputStream in) throws Exception {
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		byte[] bytes = new byte[4096];
+		int len = -1;
+		while ((len = in.read(bytes)) != -1) {
+			os.write(bytes, 0, len);
+		}
+		in.close();
+		return os.toByteArray();
 	}
 
 	/**
