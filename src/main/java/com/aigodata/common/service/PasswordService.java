@@ -15,6 +15,6 @@ public interface PasswordService {
 	 * 
 	 * @param newPassword 新密码
 	 */
-	public void reset(String newPassword);
+	public void reset(long userId, String newPassword);
 
 }

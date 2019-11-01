@@ -42,8 +42,11 @@ public class PasswordServiceImpl implements PasswordService {
 	}
 
 	@Override
-	public void reset(String newPassword) {
-		User user = userMapper.selectByPrimaryKey(SubjectUtil.getId());
+	public void reset(long userId, String newPassword) {
+		User user = userMapper.selectByPrimaryKey(userId);
+		if (user == null) {
+			throw new GlobalException(500, "用户不存在");
+		}
 		// 密码加密信息
 		HashedCredentialsMatcher matcher = (HashedCredentialsMatcher) realm.getCredentialsMatcher();
 		// 新密码

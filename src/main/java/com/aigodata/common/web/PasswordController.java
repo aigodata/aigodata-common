@@ -1,6 +1,7 @@
 package com.aigodata.common.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,10 +35,10 @@ public class PasswordController {
 		return ResultModel.success(true);
 	}
 
-	@RequestMapping
-	public ResultModel reset() {
+	@RequestMapping("/reset/{userId}")
+	public ResultModel reset(@PathVariable long userId) {
 		String decryptnNewPassword = "123456";
-		passwordService.reset(decryptnNewPassword);
+		passwordService.reset(userId, decryptnNewPassword);
 		return ResultModel.success(true);
 	}
 
