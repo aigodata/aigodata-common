@@ -34,4 +34,11 @@ public class PasswordController {
 		return ResultModel.success(true);
 	}
 
+	@RequestMapping
+	public ResultModel reset() {
+		String decryptnNewPassword = "123456";
+		passwordService.reset(decryptnNewPassword);
+		return ResultModel.success(true);
+	}
+
 }

@@ -41,4 +41,15 @@ public class PasswordServiceImpl implements PasswordService {
 		userMapper.updateByPrimaryKey(user);
 	}
 
+	@Override
+	public void reset(String newPassword) {
+		User user = userMapper.selectByPrimaryKey(SubjectUtil.getId());
+		// 密码加密信息
+		HashedCredentialsMatcher matcher = (HashedCredentialsMatcher) realm.getCredentialsMatcher();
+		// 新密码
+		String encryptedNewPassword = new SimpleHash(matcher.getHashAlgorithmName(), newPassword, user.getSalt(),
+				matcher.getHashIterations()).toString();
+		user.setPassword(encryptedNewPassword);
+		userMapper.updateByPrimaryKey(user);
+	}
 }
