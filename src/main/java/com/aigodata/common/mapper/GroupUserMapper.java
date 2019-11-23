@@ -12,6 +12,6 @@ import com.aigodata.common.domain.GroupUser;
 
 @Repository
 public interface GroupUserMapper extends BaseMapper<GroupUser> {
-	@Select("select a.group_id as groupId,ifnull(b.role_id,'') as roleId from sys_group_user a  left join sys_group_role b on a.group_id = b.group_id where a.user_id = #{userId}")
+	@Select("select a.group_id as groupId,b.role_id as roleId from sys_group_user a  left join sys_group_role b on a.group_id = b.group_id where a.user_id = #{userId}")
 	List<Map> getUserGroup(@Param("userId") Integer userId);
 }
