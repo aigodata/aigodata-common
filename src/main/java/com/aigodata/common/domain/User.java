@@ -25,6 +25,7 @@ public class User extends Base implements AuthCachePrincipal {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(updatable = false)
 	private Integer id;
 
 	/*

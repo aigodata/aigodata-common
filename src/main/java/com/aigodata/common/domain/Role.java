@@ -1,5 +1,6 @@
 package com.aigodata.common.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,6 +10,7 @@ public class Role extends Base{
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(updatable = false)
 	private Integer id;
 
 	/*
