@@ -4,6 +4,7 @@
   */
 package com.aigodata.common.common.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,13 +20,6 @@ import java.io.InputStream;
  */
 public class ReadWriteUtil {
 
-	/**
-	 * 根据流读取内容
-	 * 
-	 * @param in
-	 * @return
-	 * @throws Exception
-	 */
 	public static final String read(InputStream in) throws Exception {
 		StringBuffer contentBuffer = new StringBuffer();
 		java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(in, "utf-8"));
@@ -49,24 +43,14 @@ public class ReadWriteUtil {
 		return os.toByteArray();
 	}
 
-	/**
-	 * 根据文件读取内容
-	 * 
-	 * @param file
-	 * @return
-	 * @throws Exception
-	 */
+	public static final byte[] readByte(String filePath) throws Exception {
+		return readByte(new FileInputStream(filePath));
+	}
+
 	public static final String read(File file) throws Exception {
 		return read(new FileInputStream(file));
 	}
 
-	/**
-	 * 根据文件名称读取内容
-	 * 
-	 * @param fileName
-	 * @return
-	 * @throws Exception
-	 */
 	public static final String read(String fileName) throws Exception {
 		if (fileName == null || fileName.trim().equals("")) {
 			return "";
@@ -81,34 +65,9 @@ public class ReadWriteUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static final void write(String filePath, String fileContent) throws Exception {
-		File file = new File(filePath);
-		File parentFile = file.getParentFile();
-		if (file.exists()) {
-			throw new Exception("文件名重复");
-		}
-		if (!parentFile.exists()) {
-			parentFile.mkdirs();
-		}
-		FileOutputStream fos = new FileOutputStream(new File(filePath));
-		byte[] bytes = fileContent.getBytes("UTF-8");
-		fos.write(bytes, 0, bytes.length);
-		fos.close();
-	}
-
-	/**
-	 * 写文件
-	 * 
-	 * @param fileName
-	 * @return
-	 * @throws Exception
-	 */
 	public static final void write(String filePath, InputStream in) throws Exception {
 		File file = new File(filePath);
 		File parentFile = file.getParentFile();
-		if (file.exists()) {
-			throw new Exception("文件名重复");
-		}
 		if (!parentFile.exists()) {
 			parentFile.mkdirs();
 		}
@@ -118,7 +77,15 @@ public class ReadWriteUtil {
 		while ((len = in.read(bytes)) != -1) {
 			fos.write(bytes, 0, bytes.length);
 		}
-		in.close();
 		fos.close();
+		in.close();
+	}
+
+	public static final void write(String filePath, byte[] bys) throws Exception {
+		write(filePath, new ByteArrayInputStream(bys));
+	}
+
+	public static final void write(String filePath, String fileContent) throws Exception {
+		write(filePath, fileContent.getBytes("UTF-8"));
 	}
 }
