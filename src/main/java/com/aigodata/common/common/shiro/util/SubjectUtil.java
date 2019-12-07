@@ -111,7 +111,7 @@ public class SubjectUtil {
 	}
 
 	private static String getValue(Collection<String> strings, int index) {
-		String str = Iterables.get(strings, 5);
+		String str = Iterables.get(strings, index);
 		String[] p = str.split(":");
 		if (p.length > 1) {
 			return p[1];
