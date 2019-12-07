@@ -14,8 +14,8 @@ import com.aigodata.common.domain.User;
 public interface UserMapper extends BaseMapper<User> {
 
 	@SelectProvider(type = MakeSql.class, method = "sql")
-	public Map selectOne(String sql);
+	public Map findOne(String sql);
 
 	@SelectProvider(type = MakeSql.class, method = "sql")
-	public List<Map> selectList(String sql);
+	public List<Map> findList(String sql);
 }
