@@ -20,7 +20,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aigodata.common.common.constant.UserStatus;
-import com.aigodata.common.domain.GroupRole;
+import com.aigodata.common.common.util.StringUtil;
 import com.aigodata.common.domain.Permission;
 import com.aigodata.common.domain.Role;
 import com.aigodata.common.domain.User;
@@ -30,9 +30,6 @@ import com.aigodata.common.mapper.RoleMapper;
 import com.aigodata.common.mapper.UserMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 /**
  * 用户认证和授权
@@ -89,6 +86,31 @@ public class UserAuthRealm extends AuthorizingRealm {
 		if (users.isEmpty()) {
 			return null;
 		}
+		Map studentInfo = userMapper.selectOne("select * from zg_b_suser where user_code = '" + username + "'");
+		Map teachInfo = userMapper.selectOne("select * from zg_b_tuser where user_code = '" + username + "'");
+
+		String classId = "";
+		String className = "";
+		String orgId = "";
+		String orgName = "";
+		String collegesId = "";
+		String collegesName = "";
+		if (studentInfo != null) {
+			classId = StringUtil.ifNull(studentInfo.get("p_id"));
+			className = StringUtil.ifNull(studentInfo.get("user_classname"));
+			if (StringUtil.isNotNull(classId)) {
+				Map collegesInfo = userMapper
+						.selectOne("select * from zg_b_zzjg where id = (select parent_tg_id from zg_b_zzjg where id = "
+								+ classId + ")");
+				if (collegesInfo != null) {
+					collegesId = StringUtil.ifNull(collegesInfo.get("id"));
+					collegesName = StringUtil.ifNull(collegesInfo.get("group_name"));
+				}
+			}
+		} else if (teachInfo != null) {
+			orgId = StringUtil.ifNull(teachInfo.get("p_id"));
+			orgName = StringUtil.ifNull(teachInfo.get("p_name"));
+		}
 		User user = users.get(0);
 		// 添加用户组
 		List<Map> groupUsers = groupUserMapper.getUserGroup(user.getId());
@@ -112,6 +134,13 @@ public class UserAuthRealm extends AuthorizingRealm {
 		principalCollection.add("role:" + roleName, getName());
 		principalCollection.add(groupUsers, getName());
 		principalCollection.add("isSuper:" + isSuper, getName());
+
+		principalCollection.add("classId:" + classId, getName());
+		principalCollection.add("className:" + className, getName());
+		principalCollection.add("orgId:" + orgId, getName());
+		principalCollection.add("orgName:" + orgName, getName());
+		principalCollection.add("collegesId:" + collegesId, getName());
+		principalCollection.add("collegesName:" + collegesName, getName());
 		// 盐值
 		ByteSource credentialsSalt = ByteSource.Util.bytes(user.getSalt());
 

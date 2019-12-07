@@ -96,7 +96,24 @@ public class SubjectUtil {
 		String isSuperStr = Iterables.get(strings, 4);
 		Integer isSuper = Integer.parseInt(isSuperStr.split(":")[1]);
 
-		return new UserInfo(userId, name, username, roleId, role, groups, isSuper);
+		/*
+		 * classId
+		 */
+		String classIdStr = Iterables.get(strings, 5);
+		String classId = classIdStr.split(":")[1];
+		String classNameStr = Iterables.get(strings, 6);
+		String className = classNameStr.split(":")[1];
+		String orgIdStr = Iterables.get(strings, 7);
+		String orgId = orgIdStr.split(":")[1];
+		String orgNameStr = Iterables.get(strings, 8);
+		String orgName = orgNameStr.split(":")[1];
+		String collegesIdStr = Iterables.get(strings, 9);
+		String collegesId = collegesIdStr.split(":")[1];
+		String collegesNameStr = Iterables.get(strings, 10);
+		String collegesName = collegesNameStr.split(":")[1];
+
+		return new UserInfo(userId, name, username, roleId, role, groups, isSuper, classId, className, orgId, orgName,
+				collegesId, collegesName);
 	}
 
 }
