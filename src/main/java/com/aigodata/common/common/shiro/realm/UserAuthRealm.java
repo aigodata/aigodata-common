@@ -20,6 +20,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aigodata.common.common.constant.UserStatus;
+import com.aigodata.common.common.util.ReadWriteUtil;
 import com.aigodata.common.common.util.StringUtil;
 import com.aigodata.common.domain.Permission;
 import com.aigodata.common.domain.Role;
@@ -86,9 +87,8 @@ public class UserAuthRealm extends AuthorizingRealm {
 		if (users.isEmpty()) {
 			return null;
 		}
-		Map studentInfo = userMapper.selectOne("select * from zg_b_suser where user_code = '" + username + "'");
-		Map teachInfo = userMapper.selectOne("select * from zg_b_tuser where user_code = '" + username + "'");
-
+		Map studentInfo = userMapper.findOne("select * from zg_b_suser where user_code = '" + username + "'");
+		Map teachInfo = userMapper.findOne("select * from zg_b_tuser where user_code = '" + username + "'");
 		String classId = "";
 		String className = "";
 		String orgId = "";
@@ -100,7 +100,7 @@ public class UserAuthRealm extends AuthorizingRealm {
 			className = StringUtil.ifNull(studentInfo.get("user_classname"));
 			if (StringUtil.isNotNull(classId)) {
 				Map collegesInfo = userMapper
-						.selectOne("select * from zg_b_zzjg where id = (select parent_tg_id from zg_b_zzjg where id = "
+						.findOne("select * from zg_b_zzjg where id = (select parent_tg_id from zg_b_zzjg where id = "
 								+ classId + ")");
 				if (collegesInfo != null) {
 					collegesId = StringUtil.ifNull(collegesInfo.get("id"));

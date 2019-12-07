@@ -99,21 +99,25 @@ public class SubjectUtil {
 		/*
 		 * classId
 		 */
-		String classIdStr = Iterables.get(strings, 5);
-		String classId = classIdStr.split(":")[1];
-		String classNameStr = Iterables.get(strings, 6);
-		String className = classNameStr.split(":")[1];
-		String orgIdStr = Iterables.get(strings, 7);
-		String orgId = orgIdStr.split(":")[1];
-		String orgNameStr = Iterables.get(strings, 8);
-		String orgName = orgNameStr.split(":")[1];
-		String collegesIdStr = Iterables.get(strings, 9);
-		String collegesId = collegesIdStr.split(":")[1];
-		String collegesNameStr = Iterables.get(strings, 10);
-		String collegesName = collegesNameStr.split(":")[1];
+		String classId = getValue(strings, 5);
+		String className = getValue(strings, 6);
+		String orgId = getValue(strings, 7);
+		String orgName = getValue(strings, 8);
+		String collegesId = getValue(strings, 9);
+		String collegesName = getValue(strings, 10);
 
 		return new UserInfo(userId, name, username, roleId, role, groups, isSuper, classId, className, orgId, orgName,
 				collegesId, collegesName);
+	}
+
+	private static String getValue(Collection<String> strings, int index) {
+		String str = Iterables.get(strings, index);
+		String[] p = str.split(":");
+		if (p.length > 1) {
+			return p[1];
+		} else {
+			return "";
+		}
 	}
 
 }
