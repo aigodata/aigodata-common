@@ -18,6 +18,13 @@ public class UserInfo {
 
 	private JSONArray groups;
 
+	private String classId;
+	private String className;
+	private String orgId;
+	private String orgName;
+	private String collegesId;
+	private String collegesName;
+
 	public UserInfo() {
 	}
 
@@ -27,14 +34,22 @@ public class UserInfo {
 	}
 
 	public UserInfo(Integer id, String name, String username, Integer roleId, String role, JSONArray groups,
-			Integer isSuper) {
+			Integer isSuper, String classId, String className, String orgId, String orgName, String collegesId,
+			String collegesName) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.username = username;
 		this.roleId = roleId;
+		this.isSuper = isSuper;
 		this.role = role;
 		this.groups = groups;
-		this.isSuper = isSuper;
+		this.classId = classId;
+		this.className = className;
+		this.orgId = orgId;
+		this.orgName = orgName;
+		this.collegesId = collegesId;
+		this.collegesName = collegesName;
 	}
 
 	public Integer getId() {
@@ -91,6 +106,54 @@ public class UserInfo {
 
 	public void setIsSuper(Integer isSuper) {
 		this.isSuper = isSuper;
+	}
+
+	public String getClassId() {
+		return classId;
+	}
+
+	public void setClassId(String classId) {
+		this.classId = classId;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public String getCollegesId() {
+		return collegesId;
+	}
+
+	public void setCollegesId(String collegesId) {
+		this.collegesId = collegesId;
+	}
+
+	public String getCollegesName() {
+		return collegesName;
+	}
+
+	public void setCollegesName(String collegesName) {
+		this.collegesName = collegesName;
 	}
 
 }
