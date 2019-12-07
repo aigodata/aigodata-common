@@ -1,6 +1,6 @@
 package com.aigodata.common.common;
 
-public class DynamicSql {
+public class MakeSql {
 	public String sql(String sql) {
 		return sql;
 	}
