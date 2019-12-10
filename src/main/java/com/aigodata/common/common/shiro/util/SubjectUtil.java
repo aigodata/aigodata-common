@@ -1,6 +1,7 @@
 package com.aigodata.common.common.shiro.util;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import com.aigodata.common.vo.UserInfo;
 import com.google.common.collect.Iterables;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class SubjectUtil {
 
@@ -97,27 +99,11 @@ public class SubjectUtil {
 		Integer isSuper = Integer.parseInt(isSuperStr.split(":")[1]);
 
 		/*
-		 * classId
+		 * ExtendJson
 		 */
-		String classId = getValue(strings, 5);
-		String className = getValue(strings, 6);
-		String orgId = getValue(strings, 7);
-		String orgName = getValue(strings, 8);
-		String collegesId = getValue(strings, 9);
-		String collegesName = getValue(strings, 10);
+		String extendJsonStr = Iterables.get(strings, 5);
+		JSONObject extendJson = JSONObject.fromObject(extendJsonStr);
 
-		return new UserInfo(userId, name, username, roleId, role, groups, isSuper, classId, className, orgId, orgName,
-				collegesId, collegesName);
+		return new UserInfo(userId, name, username, roleId, role, groups, isSuper, extendJson);
 	}
-
-	private static String getValue(Collection<String> strings, int index) {
-		String str = Iterables.get(strings, index);
-		String[] p = str.split(":");
-		if (p.length > 1) {
-			return p[1];
-		} else {
-			return "";
-		}
-	}
-
 }
