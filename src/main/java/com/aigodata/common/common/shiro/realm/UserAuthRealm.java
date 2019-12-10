@@ -103,9 +103,9 @@ public class UserAuthRealm extends AuthorizingRealm {
 			extendJson.put("user.zyfxdm", StringUtil.ifNull(studentInfo.get("zyfxdm")));
 			extendJson.put("user.zyfxmc", StringUtil.ifNull(studentInfo.get("zyfxmc")));
 		} else if (teachInfo != null) {
-			extendJson.put("user.bmbh", StringUtil.ifNull(studentInfo.get("bmbh")));
-			extendJson.put("user.bmmc", StringUtil.ifNull(studentInfo.get("bmmc")));
-			extendJson.put("user.gh", StringUtil.ifNull(studentInfo.get("gh")));
+			extendJson.put("user.bmbh", StringUtil.ifNull(teachInfo.get("bmbh")));
+			extendJson.put("user.bmmc", StringUtil.ifNull(teachInfo.get("bmmc")));
+			extendJson.put("user.gh", StringUtil.ifNull(teachInfo.get("gh")));
 		}
 		User user = users.get(0);
 		// 添加用户组
