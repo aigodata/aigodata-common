@@ -49,6 +49,21 @@ public class StringUtil {
 		return Long.parseLong(obj.toString());
 	}
 
+	public static float ifFloatNull(Object obj) {
+		if (obj == null || "".equals(obj.toString())) {
+			return 0;
+		}
+		return Float.parseFloat(obj.toString());
+
+	}
+
+	public static double ifDoubleNull(Object obj) {
+		if (obj == null || "".equals(obj.toString())) {
+			return 0;
+		}
+		return Double.parseDouble(obj.toString());
+	}
+
 	public static int ifMaxNull(Object obj, int maxValue) {
 		return Math.min(ifIntNull(obj), maxValue);
 	}

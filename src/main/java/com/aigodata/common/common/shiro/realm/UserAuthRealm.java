@@ -20,7 +20,6 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aigodata.common.common.constant.UserStatus;
-import com.aigodata.common.common.util.ReadWriteUtil;
 import com.aigodata.common.common.util.StringUtil;
 import com.aigodata.common.domain.Permission;
 import com.aigodata.common.domain.Role;
@@ -31,6 +30,8 @@ import com.aigodata.common.mapper.RoleMapper;
 import com.aigodata.common.mapper.UserMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
+
+import net.sf.json.JSONObject;
 
 /**
  * 用户认证和授权
@@ -87,29 +88,24 @@ public class UserAuthRealm extends AuthorizingRealm {
 		if (users.isEmpty()) {
 			return null;
 		}
-		Map studentInfo = userMapper.findOne("select * from zg_b_suser where user_code = '" + username + "'");
-		Map teachInfo = userMapper.findOne("select * from zg_b_tuser where user_code = '" + username + "'");
-		String classId = "";
-		String className = "";
-		String orgId = "";
-		String orgName = "";
-		String collegesId = "";
-		String collegesName = "";
+		Map studentInfo = userMapper.findOne("select * from js_b_在校生信息  where xsxh = '" + username + "'");
+		Map teachInfo = userMapper.findOne("select * from js_b_教师基本情况  where gh = '" + username + "'");
+		JSONObject extendJson = new JSONObject();
 		if (studentInfo != null) {
-			classId = StringUtil.ifNull(studentInfo.get("p_id"));
-			className = StringUtil.ifNull(studentInfo.get("user_classname"));
-			if (StringUtil.isNotNull(classId)) {
-				Map collegesInfo = userMapper
-						.findOne("select * from zg_b_zzjg where id = (select parent_tg_id from zg_b_zzjg where id = "
-								+ classId + ")");
-				if (collegesInfo != null) {
-					collegesId = StringUtil.ifNull(collegesInfo.get("id"));
-					collegesName = StringUtil.ifNull(collegesInfo.get("group_name"));
-				}
-			}
+			extendJson.put("user.xsxh", StringUtil.ifNull(studentInfo.get("xsxh")));
+			extendJson.put("user.xz_nj", StringUtil.ifNull(studentInfo.get("xz_nj")));
+			extendJson.put("user.bmbh", StringUtil.ifNull(studentInfo.get("bmbh")));
+			extendJson.put("user.bmmc", StringUtil.ifNull(studentInfo.get("bmmc")));
+			extendJson.put("user.bjdm", StringUtil.ifNull(studentInfo.get("bjdm")));
+			extendJson.put("user.bjmc", StringUtil.ifNull(studentInfo.get("bjmc")));
+			extendJson.put("user.zydm", StringUtil.ifNull(studentInfo.get("zydm")));
+			extendJson.put("user.zymc", StringUtil.ifNull(studentInfo.get("zymc")));
+			extendJson.put("user.zyfxdm", StringUtil.ifNull(studentInfo.get("zyfxdm")));
+			extendJson.put("user.zyfxmc", StringUtil.ifNull(studentInfo.get("zyfxmc")));
 		} else if (teachInfo != null) {
-			orgId = StringUtil.ifNull(teachInfo.get("p_id"));
-			orgName = StringUtil.ifNull(teachInfo.get("p_name"));
+			extendJson.put("user.bmbh", StringUtil.ifNull(studentInfo.get("bmbh")));
+			extendJson.put("user.bmmc", StringUtil.ifNull(studentInfo.get("bmmc")));
+			extendJson.put("user.gh", StringUtil.ifNull(studentInfo.get("gh")));
 		}
 		User user = users.get(0);
 		// 添加用户组
@@ -134,13 +130,8 @@ public class UserAuthRealm extends AuthorizingRealm {
 		principalCollection.add("role:" + roleName, getName());
 		principalCollection.add(groupUsers, getName());
 		principalCollection.add("isSuper:" + isSuper, getName());
-
-		principalCollection.add("classId:" + classId, getName());
-		principalCollection.add("className:" + className, getName());
-		principalCollection.add("orgId:" + orgId, getName());
-		principalCollection.add("orgName:" + orgName, getName());
-		principalCollection.add("collegesId:" + collegesId, getName());
-		principalCollection.add("collegesName:" + collegesName, getName());
+		// extends json
+		principalCollection.add(extendJson.toString(), getName());
 		// 盐值
 		ByteSource credentialsSalt = ByteSource.Util.bytes(user.getSalt());
 

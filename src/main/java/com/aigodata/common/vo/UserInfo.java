@@ -1,6 +1,7 @@
 package com.aigodata.common.vo;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class UserInfo {
 
@@ -18,12 +19,7 @@ public class UserInfo {
 
 	private JSONArray groups;
 
-	private String classId;
-	private String className;
-	private String orgId;
-	private String orgName;
-	private String collegesId;
-	private String collegesName;
+	private JSONObject extendJson;
 
 	public UserInfo() {
 	}
@@ -34,8 +30,7 @@ public class UserInfo {
 	}
 
 	public UserInfo(Integer id, String name, String username, Integer roleId, String role, JSONArray groups,
-			Integer isSuper, String classId, String className, String orgId, String orgName, String collegesId,
-			String collegesName) {
+			Integer isSuper, JSONObject json) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -44,12 +39,7 @@ public class UserInfo {
 		this.isSuper = isSuper;
 		this.role = role;
 		this.groups = groups;
-		this.classId = classId;
-		this.className = className;
-		this.orgId = orgId;
-		this.orgName = orgName;
-		this.collegesId = collegesId;
-		this.collegesName = collegesName;
+		this.extendJson = json;
 	}
 
 	public Integer getId() {
@@ -108,52 +98,12 @@ public class UserInfo {
 		this.isSuper = isSuper;
 	}
 
-	public String getClassId() {
-		return classId;
+	public JSONObject getExtendJson() {
+		return extendJson;
 	}
 
-	public void setClassId(String classId) {
-		this.classId = classId;
-	}
-
-	public String getClassName() {
-		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
-	}
-
-	public String getOrgId() {
-		return orgId;
-	}
-
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
-
-	public String getOrgName() {
-		return orgName;
-	}
-
-	public void setOrgName(String orgName) {
-		this.orgName = orgName;
-	}
-
-	public String getCollegesId() {
-		return collegesId;
-	}
-
-	public void setCollegesId(String collegesId) {
-		this.collegesId = collegesId;
-	}
-
-	public String getCollegesName() {
-		return collegesName;
-	}
-
-	public void setCollegesName(String collegesName) {
-		this.collegesName = collegesName;
+	public void setExtendJson(JSONObject extendJson) {
+		this.extendJson = extendJson;
 	}
 
 }
