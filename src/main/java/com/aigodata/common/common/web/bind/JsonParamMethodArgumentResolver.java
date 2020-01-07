@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,12 +16,12 @@ import org.springframework.core.MethodParameter;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
 
+import com.aigodata.common.common.web.annotation.JsonParam;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.aigodata.common.common.web.annotation.JsonParam;
 
 /**
  * 自定义JSON参数解析器, 将JSON属性映射到方法参数中. 直接继承RequestParamMethodArgumentResolver类,
@@ -132,7 +131,7 @@ public class JsonParamMethodArgumentResolver extends RequestParamMethodArgumentR
 			try {
 				StringBuilderWriter writer = new StringBuilderWriter();
 				InputStreamReader reader = new InputStreamReader(servletRequest.getInputStream(),
-						Charset.defaultCharset());
+						"UTF-8");
 				char[] buffer = new char[1024 * 4];
 				int n;
 				while ((n = reader.read(buffer)) != -1) {
