@@ -37,7 +37,7 @@ public class PasswordController {
 
 	@RequestMapping("/reset/{userId}")
 	public ResultModel reset(@PathVariable long userId) {
-		String decryptnNewPassword = "123456";
+		String decryptnNewPassword = "aigo@data";
 		passwordService.reset(userId, decryptnNewPassword);
 		return ResultModel.success(true);
 	}
